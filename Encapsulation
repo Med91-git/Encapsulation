@@ -1,0 +1,173 @@
+using System.Runtime.CompilerServices;
+
+namespace Encapsulation
+{
+    internal class Program
+    {
+
+        class BeerEncapsulator
+        {
+
+            private double _availableMachineBeerVolume = 2;
+            private int _availableBottles;
+            private int _availableCapsules;
+
+            public double GetAvailableBeerVolume()
+            {
+                return _availableMachineBeerVolume;
+            }
+            public int GetAvailableBottles()
+            {
+                return _availableBottles;
+            }
+            public int GetAvailableCapsules()
+            {
+                return _availableCapsules;
+            }
+
+            public void SetAvailableBottles(int availableBottlesQuantity)
+            {
+                this._availableBottles = availableBottlesQuantity;
+            }
+            public void SetAvailableCapsules(int availableCapsulesQuantity)
+            {
+                this._availableCapsules = availableCapsulesQuantity; 
+            }
+
+
+            public void AddBeer(double beerQuantityUserInput)
+            {
+
+                // Récupérer la quantité total de biere disponible dans la machine
+
+                double availableTotalQuantityBeer = GetAvailableBeerVolume();
+
+                // Incrémenter la quantité de biere saisie par l'utilisateur à la quantité total disponible dans la machine 
+
+                _availableMachineBeerVolume = availableTotalQuantityBeer +  beerQuantityUserInput;   
+            }
+
+            public int ProduceEncapsulatedBeerBottles(int toProduceBottlesNumber)  
+            {
+                int producedBottlesNumber = 0;
+
+                if (_availableCapsules >= 1 && _availableBottles >= 1 && _availableMachineBeerVolume >= 33)
+                {
+                    for (int i = 0; i < toProduceBottlesNumber; i++)
+                    {
+                        _availableBottles--;
+                        _availableMachineBeerVolume -= 33;
+                        _availableCapsules--;
+
+                        // Compter le nombre de bouteilles produites
+
+                        producedBottlesNumber++;
+
+                    }
+                    // Afficher le nombre de composants restants
+                    Console.WriteLine($"Il vous reste actuellement : {_availableMachineBeerVolume} cl de bière {_availableBottles}  bouteilles {_availableCapsules} capsules");  
+
+                }
+
+                else
+                {
+                    Console.WriteLine("Désolé... vous n'avez plus assez de composant pour produire une bouteille de bière");    
+                }
+
+                return producedBottlesNumber; 
+            } 
+
+        }
+
+        static void Main(string[] args) 
+        {
+            // Instanciation de l'objet 
+            
+            BeerEncapsulator beerEncapsulator = new BeerEncapsulator();
+
+            // Saisies utilisateur 
+
+            int bottlesQuantity = 0;
+
+            while (bottlesQuantity == 0 || bottlesQuantity < 0)
+            {
+
+                Console.Write("Combien de bouteilles vides souhaitez-vous ? ");
+
+                string bottlesQuantityStr = Console.ReadLine();
+
+                bottlesQuantity = int.Parse(bottlesQuantityStr);
+
+                beerEncapsulator.SetAvailableBottles(bottlesQuantity);
+
+                if(bottlesQuantity < 0)
+                {
+                    Console.WriteLine("Erreur, vous ne pouvez pas saisir un nombre négatif");
+                    Console.WriteLine(); 
+                }
+
+                if(bottlesQuantity > 0)  
+                {
+                    break;
+                }
+
+            }
+
+            Console.WriteLine();
+
+
+            int capsulesQuantity = 0; 
+            while (capsulesQuantity == 0 || capsulesQuantity < 0)   
+            {
+                Console.Write("Combien de capsules souhaitez-vous ? ");
+
+                string capsulesQuantityStr = Console.ReadLine();
+
+                capsulesQuantity = int.Parse(capsulesQuantityStr);
+
+                beerEncapsulator.SetAvailableCapsules(capsulesQuantity);
+
+                Console.WriteLine();
+
+                if (capsulesQuantity < 0)
+                {
+                    Console.WriteLine("Erreur, vous ne pouvez pas saisir un nombre négatif");
+                    Console.WriteLine();
+                }
+
+                if (capsulesQuantity > 0)
+                {
+                    break;  
+                }
+
+            }
+            Console.WriteLine();
+            Console.Write("Combien de litres de bière souhaitez-vous (en centilitres) ? ");
+
+            string beerQuantityStr = Console.ReadLine();
+
+            double beerQuantity = double.Parse(beerQuantityStr);
+
+            beerEncapsulator.AddBeer(beerQuantity);
+
+            Console.WriteLine(); 
+
+            // Demander à l'utilisateur le nombre de bouteilles de bières à produire 
+
+            Console.Write("Combien de bouteilles de bière souhaitez-vous produire ? ");
+            string producedBeerBottlesNumberStr = Console.ReadLine();
+
+            int producedBeerBottlesNumber = int.Parse(producedBeerBottlesNumberStr);
+
+            int producedBeerBottlesResult = beerEncapsulator.ProduceEncapsulatedBeerBottles(producedBeerBottlesNumber);
+
+            Console.WriteLine();
+
+            // Afficher le résultat du nombre de bouteilles produites 
+
+            Console.WriteLine("Le nombre de bouteilles produites est de :  " + producedBeerBottlesResult);   
+
+
+        }
+    }
+}
